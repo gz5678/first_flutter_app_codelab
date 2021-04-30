@@ -11,6 +11,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Startup Name Generator",
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: Colors.white
+      ),
       home: RandomWords()
     );
   }
@@ -96,6 +99,38 @@ class _RandomWordsState extends State<RandomWords> {
     );
   }
 
+  void _displayStats() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          final numOfPairs = _suggestions.length;
+          final numOfSaved = _saved.length;
+          return Scaffold(
+            appBar: AppBar(
+              title: Text("Stats"),
+            ),
+            body: ListView(
+              children: [
+                ListTile(
+                  title: Text(
+                    "Num of word pairs: $numOfPairs",
+                    style: _biggerFont,
+                  ),
+                ),
+                ListTile(
+                  title: Text(
+                    "Num of favorites: $numOfSaved",
+                    style: _biggerFont
+                  )
+                )
+              ],
+            ),
+          );
+        },
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,6 +138,7 @@ class _RandomWordsState extends State<RandomWords> {
         title: Text('Startup Name Generator'),
         actions: [
           IconButton(icon: Icon(Icons.list), onPressed: _pushSaved),
+          IconButton(icon: Icon(Icons.equalizer), onPressed: _displayStats)
         ],
       ),
       body: _buildSuggestions()
